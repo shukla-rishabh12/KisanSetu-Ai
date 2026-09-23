@@ -35,6 +35,32 @@ ml/models/*.pkl
 logs/
 *.log
 
+
+
+
+
+
+
+
+
+
+
+
+# ----- Bootstrap checkpoint (auto-generated) -----
+data_pipeline/.bootstrap_checkpoint.json
+*.checkpoint.json
+
+
+
+
+
+
+
+
+
+
+
+
 # ----- VS Code -----
 .vscode/
 *.code-workspace

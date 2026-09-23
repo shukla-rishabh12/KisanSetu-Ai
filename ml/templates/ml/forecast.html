@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Price Forecast — KisanBazaar AI</title>
+
+    <link rel="stylesheet" href="{{ url_for('ml.static', filename='ml/css/forecast.css') }}">
+    <link rel="stylesheet" href="{{ url_for('chatbot.static', filename='chatbot/css/chat.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+</head>
+<body>
+    <!-- HEADER -->
+    <header class="kb-header">
+        <div class="kb-header-left">
+            <h1>🔮 KisanSetu AI</h1>
+            <span class="kb-subtitle">Price Forecast</span>
+        </div>
+        <div class="kb-header-right">
+            <a href="/" class="kb-nav-link">← Home</a>
+            <a href="/dashboard" class="kb-nav-link">📊 Dashboard</a>
+        </div>
+    </header>
+
+    <!-- INTRO -->
+    <section class="ml-intro">
+        <h2>Future Price Prediction</h2>
+        <p>
+            Historical mandi data aur AI model se aane wale 10 din ka expected price dekho.
+            Market, commodity aur variety select karke <strong>Predict</strong> dabao.
+        </p>
+    </section>
+
+    <!-- FILTERS / INPUT FORM -->
+    <section class="kb-filters">
+        <h2 class="kb-section-title">Prediction Input</h2>
+
+        <div class="kb-filter-grid">
+            <!-- State -->
+            <div class="kb-filter-item">
+                <label for="combo-state-input">State</label>
+                <div class="kb-combobox" data-field="state" id="combo-state">
+                    <input type="text" class="kb-combobox-input" id="combo-state-input" placeholder="All States" autocomplete="off">
+                    <input type="hidden" id="filter-state" value="">
+                    <button type="button" class="kb-combobox-clear" title="Clear">×</button>
+                    <div class="kb-combobox-dropdown" role="listbox"></div>
+                </div>
+            </div>
+
+            <!-- District -->
+            <div class="kb-filter-item">
+                <label for="combo-district-input">District</label>
+                <div class="kb-combobox" data-field="district" id="combo-district">
+                    <input type="text" class="kb-combobox-input" id="combo-district-input" placeholder="All Districts" autocomplete="off">
+                    <input type="hidden" id="filter-district" value="">
+                    <button type="button" class="kb-combobox-clear" title="Clear">×</button>
+                    <div class="kb-combobox-dropdown" role="listbox"></div>
+                </div>
+            </div>
+
+            <!-- Market -->
+            <div class="kb-filter-item">
+                <label for="combo-market-input">Market / Mandi</label>
+                <div class="kb-combobox" data-field="market" id="combo-market">
+                    <input type="text" class="kb-combobox-input" id="combo-market-input" placeholder="Select Market" autocomplete="off">
+                    <input type="hidden" id="filter-market" value="">
+                    <button type="button" class="kb-combobox-clear" title="Clear">×</button>
+                    <div class="kb-combobox-dropdown" role="listbox"></div>
+                </div>
+            </div>
+
+            <!-- Commodity -->
+            <div class="kb-filter-item">
+                <label for="combo-commodity-input">Commodity</label>
+                <div class="kb-combobox" data-field="commodity" id="combo-commodity">
+                    <input type="text" class="kb-combobox-input" id="combo-commodity-input" placeholder="Select Commodity" autocomplete="off">
+                    <input type="hidden" id="filter-commodity" value="">
+                    <button type="button" class="kb-combobox-clear" title="Clear">×</button>
+                    <div class="kb-combobox-dropdown" role="listbox"></div>
+                </div>
+            </div>
+
+            <!-- Variety -->
+            <div class="kb-filter-item">
+                <label for="combo-variety-input">Variety (optional)</label>
+                <div class="kb-combobox" data-field="variety" id="combo-variety">
+                    <input type="text" class="kb-combobox-input" id="combo-variety-input" placeholder="All Varieties" autocomplete="off">
+                    <input type="hidden" id="filter-variety" value="">
+                    <button type="button" class="kb-combobox-clear" title="Clear">×</button>
+                    <div class="kb-combobox-dropdown" role="listbox"></div>
+                </div>
+            </div>
+
+            <!-- Prediction Date -->
+            <div class="kb-filter-item">
+                <label for="filter-start-date">Prediction Date</label>
+                <input type="date" id="filter-start-date" class="kb-input" value="{{ default_date }}">
+            </div>
+
+            <!-- Days -->
+            <div class="kb-filter-item">
+                <label for="filter-days">Forecast Days</label>
+                <select id="filter-days" class="kb-input">
+                    <option value="5">5 days</option>
+                    <option value="7">7 days</option>
+                    <option value="10" selected>10 days</option>
+                    <option value="15">15 days</option>
+                </select>
+            </div>
+
+            <!-- Quantity -->
+            <div class="kb-filter-item">
+                <label for="filter-quantity">Quantity (kg, optional)</label>
+                <input type="number" id="filter-quantity" class="kb-input" placeholder="e.g. 100" min="1" step="1">
+            </div>
+
+            <!-- Buttons -->
+            <div class="kb-filter-item kb-filter-actions">
+                <button id="btn-predict" class="kb-btn kb-btn-primary">🔮 Predict</button>
+                <button id="btn-reset-forecast" class="kb-btn kb-btn-secondary">Reset</button>
+            </div>
+        </div>
+
+        <!-- Warning banner -->
+        <div class="ml-warning-banner" id="data-warning" style="display: none;">
+            <span class="ml-warning-icon">⚠️</span>
+            <span id="data-warning-text"></span>
+        </div>
+    </section>
+
+    <!-- LOADING -->
+    <section class="ml-loading" id="ml-loading" style="display: none;">
+        <div class="ml-spinner"></div>
+        <p>Prediction generate ho rahi hai... Please wait.</p>
+    </section>
+
+    <!-- RESULTS -->
+    <section class="ml-results" id="ml-results" style="display: none;">
+
+        <!-- SELECTED DATE CARD -->
+        <div class="ml-result-header">
+            <h2>Price Forecast Result</h2>
+            <p class="ml-result-meta" id="result-meta"></p>
+        </div>
+
+        <div class="ml-selected-card" id="selected-card">
+            <div class="ml-selected-label">Selected Date Price</div>
+            <div class="ml-selected-date" id="selected-date">—</div>
+            <div class="ml-selected-prices">
+                <div class="ml-price-box ml-price-modal">
+                    <div class="ml-price-label">Modal</div>
+                    <div class="ml-price-value" id="selected-modal">—</div>
+                    <div class="ml-price-unit">₹ / quintal</div>
+                </div>
+                <div class="ml-price-box ml-price-min">
+                    <div class="ml-price-label">Min</div>
+                    <div class="ml-price-value" id="selected-min">—</div>
+                    <div class="ml-price-unit">₹ / quintal</div>
+                </div>
+                <div class="ml-price-box ml-price-max">
+                    <div class="ml-price-label">Max</div>
+                    <div class="ml-price-value" id="selected-max">—</div>
+                    <div class="ml-price-unit">₹ / quintal</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- EXPECTED VALUE (if quantity given) -->
+        <div class="ml-expected-card" id="expected-card" style="display: none;">
+            <h3>💰 Expected Gross Value</h3>
+            <div class="ml-expected-grid">
+                <div class="ml-expected-item">
+                    <span class="ml-expected-label">Quantity</span>
+                    <span class="ml-expected-value" id="exp-quantity">—</span>
+                </div>
+                <div class="ml-expected-item">
+                    <span class="ml-expected-label">Price / kg</span>
+                    <span class="ml-expected-value" id="exp-price-kg">—</span>
+                </div>
+                <div class="ml-expected-item ml-expected-highlight">
+                    <span class="ml-expected-label">Expected Total</span>
+                    <span class="ml-expected-value" id="exp-total">—</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- FORECAST CHART -->
+        <div class="ml-chart-card">
+            <h3>Next Days Forecast</h3>
+            <div class="ml-chart-wrapper">
+                <canvas id="chart-forecast"></canvas>
+            </div>
+        </div>
+
+        <!-- FORECAST TABLE -->
+        <div class="ml-table-card">
+            <h3>Day-wise Forecast</h3>
+            <div class="ml-table-wrapper">
+                <table class="ml-table">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Date</th>
+                            <th>Min (₹/quintal)</th>
+                            <th>Modal (₹/quintal)</th>
+                            <th>Max (₹/quintal)</th>
+                        </tr>
+                    </thead>
+                    <tbody id="forecast-tbody">
+                        <!-- JS se fill hoga -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- MODEL INFO -->
+        <div class="ml-model-info">
+            <span>🤖 Model: <strong id="model-name">—</strong></span>
+            <span>R²: <strong id="model-r2">—</strong></span>
+            <span>MAPE: <strong id="model-mape">—</strong></span>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="kb-footer">
+        <p>
+            KisanSetu AI — Data source:
+            <a href="https://data.gov.in" target="_blank">data.gov.in</a>
+            (Directorate of Marketing &amp; Inspection, Ministry of Agriculture)
+        </p>
+    </footer>
+
+    <!-- SCRIPTS -->
+    <script src="{{ url_for('dashboard.static', filename='dashboard/js/combobox.js') }}"></script>
+    <script src="{{ url_for('ml.static', filename='ml/js/forecast_chart.js') }}"></script>
+    <script src="{{ url_for('ml.static', filename='ml/js/forecast.js') }}"></script>
+
+    <!-- Chat Widget -->
+    {% include 'chatbot/chat_widget.html' %}
+    <script src="{{ url_for('chatbot.static', filename='chatbot/js/chat.js') }}"></script>
+</body>
+</html>

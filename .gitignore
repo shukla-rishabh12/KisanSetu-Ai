@@ -1,0 +1,53 @@
+# ----- Environment & Secrets -----
+.env
+.env.*
+!.env.example
+
+# ----- Python -----
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+env/
+ENV/
+.history/
+
+# ----- Flask -----
+instance/
+.webassets-cache
+
+# ----- Database -----
+# SQLite file Render pe git se nahi aayegi — fresh banti hai
+*.db
+*.sqlite
+database/kisanbazaar.db
+
+# ----- ML Models (bade size ki wajah se) -----
+# ----- ML Models -----
+# 42MB model git me allow kar rahe hain (deployment ke liye zaroori)
+ml/models/*.pkl
+!ml/models/current_model.pkl
+!ml/models/.gitkeep
+
+# ----- Logs -----
+logs/
+*.log
+
+# ----- VS Code -----
+.vscode/
+*.code-workspace
+
+# ----- OS -----
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ----- Jupyter (agar future me use karo) -----
+.ipynb_checkpoints/
+
+# ----- Testing -----
+.pytest_cache/
+.coverage
+htmlcov/

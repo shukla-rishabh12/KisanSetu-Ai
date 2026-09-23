@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Live Market Dashboard — KisanSetu AI</title>
+
+    <link rel="stylesheet" href="{{ url_for('dashboard.static', filename='dashboard/css/dashboard.css') }}">
+    
+        <link rel="stylesheet" href="{{ url_for('chatbot.static', filename='chatbot/css/chat.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+</head>
+<body>
+    <!-- ======================================================
+         SECTION 1: HEADER
+         ====================================================== -->
+    <header class="kb-header">
+        <div class="kb-header-left">
+            <h1>🌾 KisanSetu AI</h1>
+            <span class="kb-subtitle">Live Market Dashboard</span>
+        </div>
+        <div class="kb-header-right">
+            <a href="/" class="kb-nav-link">← Home</a>
+            <span class="kb-last-sync" id="last-sync-info">
+                {% if summary and summary.last_sync %}
+                    Last sync: {{ summary.last_sync.sync_date }} ({{ summary.last_sync.status }})
+                {% else %}
+                    No sync data
+                {% endif %}
+            </span>
+        </div>
+    </header>
+
+    <!-- ======================================================
+         SECTION 2: SUMMARY STATS BAR
+         ====================================================== -->
+    <section class="kb-summary-bar">
+        <div class="kb-summary-item">
+            <span class="kb-summary-label">Total Records</span>
+            <span class="kb-summary-value" id="stat-total-records">
+                {{ summary.total_records if summary else 0 }}
+            </span>
+        </div>
+        <div class="kb-summary-item">
+            <span class="kb-summary-label">Markets</span>
+            <span class="kb-summary-value" id="stat-total-markets">
+                {{ summary.total_markets if summary else 0 }}
+            </span>
+        </div>
+        <div class="kb-summary-item">
+            <span class="kb-summary-label">Commodities/Varieties</span>
+            <span class="kb-summary-value" id="stat-total-commodities">
+                {{ summary.total_commodities if summary else 0 }}
+            </span>
+        </div>
+        <div class="kb-summary-item">
+            <span class="kb-summary-label">Data Range</span>
+            <span class="kb-summary-value" id="stat-date-range">
+                {% if summary and summary.date_range and summary.date_range.min %}
+                    {{ summary.date_range.min }} → {{ summary.date_range.max }}
+                {% else %}
+                    —
+                {% endif %}
+            </span>
+        </div>
+    </section>
+
+    <!-- ======================================================
+         SECTION 3: FILTERS (with searchable comboboxes)
+         ======================================================
+         Har filter ek custom "combobox" hai:
+           - Input field (type karke search karo)
+           - Hidden input (actual selected value yahan store hoti hai)
+           - Clear button (×)
+           - Dropdown list (options JS se populate honge)
+
+         Prefix matching: "la" likhne pe "Lakhimpur", "Latur"
+         dikhega, lekin "Bilaspur" nahi (jisme "la" andar hai).
+         ====================================================== -->
+    <section class="kb-filters">
+        <h2 class="kb-section-title">Filters</h2>
+
+        <div class="kb-filter-grid">
+            <!-- State -->
+            <div class="kb-filter-item">
+                <label for="combo-state-input">State</label>
+                <div class="kb-combobox" data-field="state" id="combo-state">
+                    <input
+                        type="text"
+                        class="kb-combobox-input"
+                        id="combo-state-input"
+                        placeholder="All States"
+                        autocomplete="off"
+                    >
+                    <input type="hidden" id="filter-state" value="">
+                    <button type="button" class="kb-combobox-clear" title="Clear">×</button>
+                    <div class="kb-combobox-dropdown" role="listbox"></div>
+                </div>
+            </div>
+
+            <!-- District -->
+            <div class="kb-filter-item">
+                <label for="combo-district-input">District</label>
+                <div class="kb-combobox" data-field="district" id="combo-district">
+                    <input
+                        type="text"
+                        class="kb-combobox-input"
+                        id="combo-district-input"
+                        placeholder="All Districts"
+                        autocomplete="off"
+                    >
+                    <input type="hidden" id="filter-district" value="">
+                    <button type="button" class="kb-combobox-clear" title="Clear">×</button>
+                    <div class="kb-combobox-dropdown" role="listbox"></div>
+                </div>
+            </div>
+
+            <!-- Market -->
+            <div class="kb-filter-item">
+                <label for="combo-market-input">Market / Mandi</label>
+                <div class="kb-combobox" data-field="market" id="combo-market">
+                    <input
+                        type="text"
+                        class="kb-combobox-input"
+                        id="combo-market-input"
+                        placeholder="Select Market"
+                        autocomplete="off"
+                    >
+                    <input type="hidden" id="filter-market" value="">
+                    <button type="button" class="kb-combobox-clear" title="Clear">×</button>
+                    <div class="kb-combobox-dropdown" role="listbox"></div>
+                </div>
+            </div>
+
+            <!-- Commodity -->
+            <div class="kb-filter-item">
+                <label for="combo-commodity-input">Commodity</label>
+                <div class="kb-combobox" data-field="commodity" id="combo-commodity">
+                    <input
+                        type="text"
+                        class="kb-combobox-input"
+                        id="combo-commodity-input"
+                        placeholder="Select Commodity"
+                        autocomplete="off"
+                    >
+                    <input type="hidden" id="filter-commodity" value="">
+                    <button type="button" class="kb-combobox-clear" title="Clear">×</button>
+                    <div class="kb-combobox-dropdown" role="listbox"></div>
+                </div>
+            </div>
+
+            <!-- Variety -->
+            <div class="kb-filter-item">
+                <label for="combo-variety-input">Variety</label>
+                <div class="kb-combobox" data-field="variety" id="combo-variety">
+                    <input
+                        type="text"
+                        class="kb-combobox-input"
+                        id="combo-variety-input"
+                        placeholder="All Varieties"
+                        autocomplete="off"
+                    >
+                    <input type="hidden" id="filter-variety" value="">
+                    <button type="button" class="kb-combobox-clear" title="Clear">×</button>
+                    <div class="kb-combobox-dropdown" role="listbox"></div>
+                </div>
+            </div>
+
+            <!-- From Date -->
+            <div class="kb-filter-item">
+                <label for="filter-start-date">From Date</label>
+                <input
+                    type="date"
+                    id="filter-start-date"
+                    class="kb-input"
+                    value="{{ filter_options.date_range.min if filter_options and filter_options.date_range else '' }}"
+                >
+            </div>
+
+            <!-- To Date -->
+            <div class="kb-filter-item">
+                <label for="filter-end-date">To Date</label>
+                <input
+                    type="date"
+                    id="filter-end-date"
+                    class="kb-input"
+                    value="{{ filter_options.date_range.max if filter_options and filter_options.date_range else '' }}"
+                >
+            </div>
+
+            <!-- Buttons -->
+            <div class="kb-filter-item kb-filter-actions">
+                <button id="btn-apply-filters" class="kb-btn kb-btn-primary">
+                    Apply Filters
+                </button>
+                <button id="btn-reset-filters" class="kb-btn kb-btn-secondary">
+                    Reset
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- ======================================================
+         SECTION 4: LATEST PRICE CARDS
+         ====================================================== -->
+    <section class="kb-cards-section">
+        <h2 class="kb-section-title">Latest Prices</h2>
+
+        <div class="kb-cards" id="latest-cards">
+            <div class="kb-card kb-card-modal">
+                <div class="kb-card-label">Modal Price</div>
+                <div class="kb-card-value" id="card-modal-price">—</div>
+                <div class="kb-card-unit">₹ / quintal</div>
+            </div>
+
+            <div class="kb-card kb-card-min">
+                <div class="kb-card-label">Minimum</div>
+                <div class="kb-card-value" id="card-min-price">—</div>
+                <div class="kb-card-unit">₹ / quintal</div>
+            </div>
+
+            <div class="kb-card kb-card-max">
+                <div class="kb-card-label">Maximum</div>
+                <div class="kb-card-value" id="card-max-price">—</div>
+                <div class="kb-card-unit">₹ / quintal</div>
+            </div>
+
+            <div class="kb-card kb-card-avg">
+                <div class="kb-card-label">Average</div>
+                <div class="kb-card-value" id="card-avg-price">—</div>
+                <div class="kb-card-unit">₹ / quintal</div>
+            </div>
+        </div>
+
+        <div class="kb-card-meta" id="latest-meta">
+            <span id="latest-date">Select filters to load prices</span>
+            <span id="latest-market-commodity"></span>
+        </div>
+    </section>
+
+    <!-- ======================================================
+         SECTION 5: CHARTS
+         ====================================================== -->
+    <section class="kb-charts-section">
+        <h2 class="kb-section-title">Price Analytics</h2>
+
+        <div class="kb-empty-state" id="charts-empty">
+            <p>📊 Select a Market and Commodity above and click <strong>Apply Filters</strong>.</p>
+        </div>
+
+        <div class="kb-charts-grid" id="charts-container" style="display: none;">
+            <div class="kb-chart-card">
+                <h3 class="kb-chart-title">Price Trend</h3>
+                <div class="kb-chart-wrapper">
+                    <canvas id="chart-price-trend"></canvas>
+                </div>
+            </div>
+
+            <div class="kb-chart-card">
+                <h3 class="kb-chart-title">Monthly Movement</h3>
+                <div class="kb-chart-wrapper">
+                    <canvas id="chart-monthly-movement"></canvas>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ======================================================
+         SECTION 6: MARKET COMPARISON TABLE
+         ======================================================
+         Ab commodity aur variety columns bhi hain.
+         ====================================================== -->
+    <section class="kb-table-section" id="comparison-section" style="display: none;">
+        <h2 class="kb-section-title">Market Comparison</h2>
+        <p class="kb-table-subtitle">
+            Same commodity in different markets (recent 7 days)
+        </p>
+
+        <div class="kb-table-wrapper">
+            <table class="kb-table" id="comparison-table">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Market</th>
+                        <th>District</th>
+                        <th>State</th>
+                        <th>Commodity</th>
+                        <th>Variety</th>
+                        <th>Latest Date</th>
+                        <th>Modal (₹)</th>
+                        <th>Min (₹)</th>
+                        <th>Max (₹)</th>
+                        <th>Avg Modal (₹)</th>
+                    </tr>
+                </thead>
+                <tbody id="comparison-tbody">
+                    <!-- JS se rows bharenge -->
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- ======================================================
+         SECTION 7: FOOTER
+         ====================================================== -->
+    <footer class="kb-footer">
+        <p>
+            KisanSetu AI — Data source(not for commercial use):
+            <a href="https://data.gov.in" target="_blank">data.gov.in</a>
+            (Directorate of Marketing &amp; Inspection, Ministry of Agriculture)
+        </p>
+    </footer>
+
+    <!-- ======================================================
+         SCRIPTS
+         ====================================================== -->
+    <script src="{{ url_for('dashboard.static', filename='dashboard/js/charts.js') }}"></script>
+    <script src="{{ url_for('dashboard.static', filename='dashboard/js/combobox.js') }}"></script>
+    <script src="{{ url_for('dashboard.static', filename='dashboard/js/dashboard.js') }}"></script>
+
+    <!-- Chat Widget -->
+   {% include 'chatbot/chat_widget.html' %}
+    <script src="{{ url_for('chatbot.static', filename='chatbot/js/chat.js') }}"></script>
+</body>
+</html>

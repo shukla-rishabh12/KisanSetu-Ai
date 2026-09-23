@@ -1,0 +1,810 @@
+/* ============================================================
+   KisanBazaar AI — ML Forecast Page Styles
+   ============================================================
+   Theme: same as Dashboard (green agriculture theme).
+   Layout: form → loading → results (card + chart + table)
+   ============================================================ */
+
+
+/* ------------------------------------------------------------
+   ROOT VARIABLES (fallback for standalone use)
+   ------------------------------------------------------------ */
+:root {
+    --kb-primary: #2e7d32;
+    --kb-primary-dark: #1b5e20;
+    --kb-primary-light: #4caf50;
+    --kb-primary-bg: #e8f5e9;
+
+    --kb-card-modal: #2e7d32;
+    --kb-card-min: #1976d2;
+    --kb-card-max: #c62828;
+    --kb-card-avg: #7b1fa2;
+
+    --kb-bg: #f5f7fa;
+    --kb-bg-card: #ffffff;
+    --kb-border: #e0e0e0;
+    --kb-text: #212121;
+    --kb-text-muted: #666666;
+    --kb-text-light: #999999;
+
+    --kb-space-sm: 8px;
+    --kb-space-md: 16px;
+    --kb-space-lg: 24px;
+    --kb-space-xl: 32px;
+
+    --kb-radius-sm: 4px;
+    --kb-radius-md: 8px;
+    --kb-radius-lg: 12px;
+
+    --kb-shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.08);
+    --kb-shadow-md: 0 2px 8px rgba(0, 0, 0, 0.1);
+    --kb-shadow-lg: 0 4px 16px rgba(0, 0, 0, 0.12);
+}
+
+
+/* ------------------------------------------------------------
+   RESET
+   ------------------------------------------------------------ */
+* { box-sizing: border-box; }
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI",
+                 Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    background: var(--kb-bg);
+    color: var(--kb-text);
+    line-height: 1.5;
+    font-size: 15px;
+}
+
+h1, h2, h3, h4 { margin: 0; font-weight: 600; }
+a { color: var(--kb-primary); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+
+/* ============================================================
+   SECTION 1: HEADER (same as dashboard)
+   ============================================================ */
+
+.kb-header {
+    background: linear-gradient(135deg, var(--kb-primary) 0%, var(--kb-primary-dark) 100%);
+    color: white;
+    padding: var(--kb-space-md) var(--kb-space-lg);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: var(--kb-shadow-md);
+}
+
+.kb-header-left {
+    display: flex;
+    align-items: baseline;
+    gap: var(--kb-space-md);
+}
+
+.kb-header h1 {
+    font-size: 24px;
+    margin: 0;
+}
+
+.kb-subtitle {
+    font-size: 14px;
+    opacity: 0.9;
+    font-weight: 400;
+}
+
+.kb-header-right {
+    display: flex;
+    gap: var(--kb-space-sm);
+    font-size: 13px;
+}
+
+.kb-nav-link {
+    color: white;
+    padding: 6px 12px;
+    border-radius: var(--kb-radius-sm);
+    background: rgba(255, 255, 255, 0.15);
+    transition: background 0.2s;
+    text-decoration: none;
+}
+
+.kb-nav-link:hover {
+    background: rgba(255, 255, 255, 0.25);
+    text-decoration: none;
+}
+
+
+/* ============================================================
+   SECTION 2: INTRO BANNER
+   ============================================================ */
+
+.ml-intro {
+    background: linear-gradient(135deg, #e8f5e9 0%, #f1f8e9 100%);
+    border-left: 4px solid var(--kb-primary);
+    padding: var(--kb-space-lg);
+    margin: var(--kb-space-lg);
+    border-radius: var(--kb-radius-md);
+    box-shadow: var(--kb-shadow-sm);
+}
+
+.ml-intro h2 {
+    color: var(--kb-primary-dark);
+    margin-bottom: var(--kb-space-sm);
+    font-size: 20px;
+}
+
+.ml-intro p {
+    margin: 0;
+    color: var(--kb-text-muted);
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+
+/* ============================================================
+   SECTION 3: FILTERS (reuse from dashboard)
+   ============================================================ */
+
+.kb-filters {
+    background: var(--kb-bg-card);
+    margin: var(--kb-space-lg);
+    padding: var(--kb-space-lg);
+    border-radius: var(--kb-radius-md);
+    box-shadow: var(--kb-shadow-sm);
+}
+
+.kb-section-title {
+    font-size: 18px;
+    color: var(--kb-primary-dark);
+    margin-bottom: var(--kb-space-md);
+    padding-bottom: var(--kb-space-sm);
+    border-bottom: 2px solid var(--kb-primary-bg);
+}
+
+.kb-filter-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: var(--kb-space-md);
+}
+
+.kb-filter-item {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.kb-filter-item label {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--kb-text-muted);
+}
+
+.kb-input {
+    padding: 8px 12px;
+    font-size: 14px;
+    border: 1px solid var(--kb-border);
+    border-radius: var(--kb-radius-sm);
+    background: white;
+    color: var(--kb-text);
+    font-family: inherit;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    width: 100%;
+}
+
+.kb-input:focus {
+    outline: none;
+    border-color: var(--kb-primary);
+    box-shadow: 0 0 0 3px rgba(46, 125, 50, 0.12);
+}
+
+.kb-filter-actions {
+    justify-content: flex-end;
+    flex-direction: row !important;
+    align-items: flex-end;
+    gap: var(--kb-space-sm);
+}
+
+
+/* ============================================================
+   SECTION 4: BUTTONS
+   ============================================================ */
+
+.kb-btn {
+    padding: 9px 20px;
+    font-size: 14px;
+    font-weight: 500;
+    border: none;
+    border-radius: var(--kb-radius-sm);
+    cursor: pointer;
+    transition: background 0.2s, transform 0.1s;
+    font-family: inherit;
+    white-space: nowrap;
+}
+
+.kb-btn:active { transform: scale(0.98); }
+
+.kb-btn-primary {
+    background: var(--kb-primary);
+    color: white;
+}
+
+.kb-btn-primary:hover { background: var(--kb-primary-dark); }
+
+.kb-btn-secondary {
+    background: #f0f0f0;
+    color: var(--kb-text);
+}
+
+.kb-btn-secondary:hover { background: #e0e0e0; }
+
+.kb-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+
+/* ============================================================
+   SECTION 5: WARNING BANNER
+   ============================================================ */
+
+.ml-warning-banner {
+    margin-top: var(--kb-space-md);
+    padding: var(--kb-space-sm) var(--kb-space-md);
+    background: #fff8e1;
+    border: 1px solid #ffe082;
+    border-left: 4px solid #f57c00;
+    border-radius: var(--kb-radius-sm);
+    font-size: 13px;
+    color: #e65100;
+    display: flex;
+    align-items: center;
+    gap: var(--kb-space-sm);
+}
+
+.ml-warning-icon {
+    font-size: 16px;
+}
+
+
+/* ============================================================
+   SECTION 6: LOADING STATE
+   ============================================================ */
+
+.ml-loading {
+    text-align: center;
+    padding: var(--kb-space-xl) var(--kb-space-lg);
+    margin: var(--kb-space-lg);
+    background: var(--kb-bg-card);
+    border-radius: var(--kb-radius-md);
+    box-shadow: var(--kb-shadow-sm);
+}
+
+.ml-spinner {
+    display: inline-block;
+    width: 48px;
+    height: 48px;
+    border: 4px solid var(--kb-primary-bg);
+    border-top-color: var(--kb-primary);
+    border-radius: 50%;
+    animation: ml-spin 0.9s linear infinite;
+    margin-bottom: var(--kb-space-md);
+}
+
+@keyframes ml-spin {
+    to { transform: rotate(360deg); }
+}
+
+.ml-loading p {
+    margin: 0;
+    color: var(--kb-text-muted);
+    font-size: 14px;
+}
+
+
+/* ============================================================
+   SECTION 7: RESULTS SECTION
+   ============================================================ */
+
+.ml-results {
+    margin: 0 var(--kb-space-lg) var(--kb-space-lg);
+}
+
+.ml-result-header {
+    margin-bottom: var(--kb-space-md);
+}
+
+.ml-result-header h2 {
+    color: var(--kb-primary-dark);
+    font-size: 20px;
+    margin-bottom: 4px;
+}
+
+.ml-result-meta {
+    margin: 0;
+    font-size: 13px;
+    color: var(--kb-text-muted);
+}
+
+
+/* ============================================================
+   SECTION 8: SELECTED DATE CARD
+   ============================================================ */
+
+.ml-selected-card {
+    background: var(--kb-bg-card);
+    border-radius: var(--kb-radius-md);
+    padding: var(--kb-space-lg);
+    box-shadow: var(--kb-shadow-md);
+    margin-bottom: var(--kb-space-md);
+    border-top: 4px solid var(--kb-primary);
+}
+
+.ml-selected-label {
+    font-size: 12px;
+    color: var(--kb-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 4px;
+}
+
+.ml-selected-date {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--kb-primary-dark);
+    margin-bottom: var(--kb-space-md);
+}
+
+.ml-selected-prices {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--kb-space-md);
+}
+
+.ml-price-box {
+    background: var(--kb-bg);
+    padding: var(--kb-space-md);
+    border-radius: var(--kb-radius-sm);
+    text-align: center;
+}
+
+.ml-price-box.ml-price-modal {
+    background: linear-gradient(135deg, #e8f5e9 0%, #f1f8e9 100%);
+    border: 1px solid #a5d6a7;
+}
+
+.ml-price-box.ml-price-min {
+    background: #e3f2fd;
+    border: 1px solid #90caf9;
+}
+
+.ml-price-box.ml-price-max {
+    background: #ffebee;
+    border: 1px solid #ef9a9a;
+}
+
+.ml-price-label {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--kb-text-muted);
+    margin-bottom: 6px;
+}
+
+.ml-price-value {
+    font-size: 26px;
+    font-weight: 700;
+    line-height: 1.1;
+}
+
+.ml-price-box.ml-price-modal .ml-price-value { color: var(--kb-card-modal); }
+.ml-price-box.ml-price-min .ml-price-value { color: var(--kb-card-min); }
+.ml-price-box.ml-price-max .ml-price-value { color: var(--kb-card-max); }
+
+.ml-price-unit {
+    font-size: 11px;
+    color: var(--kb-text-light);
+    margin-top: 4px;
+}
+
+
+/* ============================================================
+   SECTION 9: EXPECTED VALUE CARD
+   ============================================================ */
+
+.ml-expected-card {
+    background: linear-gradient(135deg, #fff9c4 0%, #fffde7 100%);
+    border: 2px solid #fbc02d;
+    border-radius: var(--kb-radius-md);
+    padding: var(--kb-space-lg);
+    margin-bottom: var(--kb-space-md);
+    box-shadow: var(--kb-shadow-md);
+}
+
+.ml-expected-card h3 {
+    font-size: 16px;
+    color: #e65100;
+    margin-bottom: var(--kb-space-md);
+}
+
+.ml-expected-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: var(--kb-space-md);
+}
+
+.ml-expected-item {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: var(--kb-space-md);
+    background: rgba(255, 255, 255, 0.6);
+    border-radius: var(--kb-radius-sm);
+}
+
+.ml-expected-item.ml-expected-highlight {
+    background: var(--kb-primary);
+    color: white;
+}
+
+.ml-expected-item.ml-expected-highlight .ml-expected-label {
+    color: rgba(255, 255, 255, 0.85);
+}
+
+.ml-expected-label {
+    font-size: 11px;
+    color: var(--kb-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.ml-expected-value {
+    font-size: 20px;
+    font-weight: 700;
+}
+
+
+/* ============================================================
+   SECTION 10: CHART CARD
+   ============================================================ */
+
+.ml-chart-card {
+    background: var(--kb-bg-card);
+    border-radius: var(--kb-radius-md);
+    padding: var(--kb-space-lg);
+    box-shadow: var(--kb-shadow-sm);
+    margin-bottom: var(--kb-space-md);
+}
+
+.ml-chart-card h3 {
+    font-size: 15px;
+    color: var(--kb-primary-dark);
+    margin-bottom: var(--kb-space-md);
+    padding-bottom: var(--kb-space-sm);
+    border-bottom: 1px solid var(--kb-border);
+}
+
+.ml-chart-wrapper {
+    position: relative;
+    height: 320px;
+    width: 100%;
+}
+
+
+/* ============================================================
+   SECTION 11: TABLE CARD
+   ============================================================ */
+
+.ml-table-card {
+    background: var(--kb-bg-card);
+    border-radius: var(--kb-radius-md);
+    padding: var(--kb-space-lg);
+    box-shadow: var(--kb-shadow-sm);
+    margin-bottom: var(--kb-space-md);
+}
+
+.ml-table-card h3 {
+    font-size: 15px;
+    color: var(--kb-primary-dark);
+    margin-bottom: var(--kb-space-md);
+    padding-bottom: var(--kb-space-sm);
+    border-bottom: 1px solid var(--kb-border);
+}
+
+.ml-table-wrapper {
+    overflow-x: auto;
+}
+
+.ml-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+}
+
+.ml-table thead {
+    background: var(--kb-primary-bg);
+}
+
+.ml-table th {
+    padding: 12px 14px;
+    text-align: left;
+    font-weight: 600;
+    color: var(--kb-primary-dark);
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+    white-space: nowrap;
+}
+
+.ml-table td {
+    padding: 11px 14px;
+    border-top: 1px solid var(--kb-border);
+}
+
+.ml-table tbody tr:hover {
+    background: #f9fdf9;
+}
+
+.ml-table tbody tr:nth-child(even) {
+    background: #fafafa;
+}
+
+.ml-table td.ml-price-modal-cell {
+    font-weight: 700;
+    color: var(--kb-primary-dark);
+}
+
+
+/* ============================================================
+   SECTION 12: MODEL INFO
+   ============================================================ */
+
+.ml-model-info {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--kb-space-lg);
+    padding: var(--kb-space-md) var(--kb-space-lg);
+    background: var(--kb-bg-card);
+    border-radius: var(--kb-radius-md);
+    font-size: 13px;
+    color: var(--kb-text-muted);
+    box-shadow: var(--kb-shadow-sm);
+}
+
+.ml-model-info strong {
+    color: var(--kb-primary-dark);
+    font-weight: 600;
+}
+
+
+/* ============================================================
+   SECTION 13: FOOTER
+   ============================================================ */
+
+.kb-footer {
+    margin-top: var(--kb-space-xl);
+    padding: var(--kb-space-lg);
+    background: var(--kb-primary-dark);
+    color: rgba(255, 255, 255, 0.8);
+    text-align: center;
+    font-size: 13px;
+}
+
+.kb-footer a {
+    color: rgba(255, 255, 255, 0.95);
+    text-decoration: underline;
+}
+
+
+/* ============================================================
+   SECTION 14: COMBOBOX STYLES
+   ============================================================
+   NOTE: Combobox styles Dashboard me hain. ML page pe bhi chahiye.
+   Dashboard ka CSS load nahi hota ML page pe, isliye ye yahan duplicating.
+   ============================================================ */
+
+.kb-combobox {
+    position: relative;
+    width: 100%;
+}
+
+.kb-combobox-input {
+    width: 100%;
+    padding: 8px 32px 8px 12px;
+    font-size: 14px;
+    border: 1px solid var(--kb-border);
+    border-radius: var(--kb-radius-sm);
+    background: white;
+    color: var(--kb-text);
+    font-family: inherit;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.kb-combobox-input:focus {
+    outline: none;
+    border-color: var(--kb-primary);
+    box-shadow: 0 0 0 3px rgba(46, 125, 50, 0.12);
+}
+
+.kb-combobox-input::placeholder {
+    color: var(--kb-text-light);
+    font-style: italic;
+}
+
+.kb-combobox.kb-combobox-open .kb-combobox-input {
+    border-color: var(--kb-primary);
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+    box-shadow: 0 0 0 3px rgba(46, 125, 50, 0.12);
+}
+
+.kb-combobox-clear {
+    position: absolute;
+    right: 6px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 22px;
+    height: 22px;
+    border: none;
+    background: transparent;
+    color: var(--kb-text-light);
+    font-size: 18px;
+    line-height: 1;
+    cursor: pointer;
+    border-radius: 50%;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    font-family: inherit;
+}
+
+.kb-combobox-clear:hover {
+    background: #f0f0f0;
+    color: var(--kb-text);
+}
+
+.kb-combobox.kb-has-value .kb-combobox-clear {
+    display: flex;
+}
+
+.kb-combobox-dropdown {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    max-height: 260px;
+    overflow-y: auto;
+    background: white;
+    border: 1px solid var(--kb-primary);
+    border-top: none;
+    border-bottom-left-radius: var(--kb-radius-sm);
+    border-bottom-right-radius: var(--kb-radius-sm);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
+    display: none;
+}
+
+.kb-combobox.kb-combobox-open .kb-combobox-dropdown {
+    display: block;
+}
+
+.kb-combobox-dropdown::-webkit-scrollbar { width: 8px; }
+.kb-combobox-dropdown::-webkit-scrollbar-track { background: #f5f5f5; }
+.kb-combobox-dropdown::-webkit-scrollbar-thumb {
+    background: #c0c0c0;
+    border-radius: 4px;
+}
+
+.kb-combobox-option {
+    padding: 8px 12px;
+    font-size: 13px;
+    cursor: pointer;
+    color: var(--kb-text);
+    border-bottom: 1px solid #f5f5f5;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.kb-combobox-option:last-child { border-bottom: none; }
+.kb-combobox-option:hover { background: var(--kb-primary-bg); }
+
+.kb-combobox-option.kb-combobox-option-active,
+.kb-combobox-option.kb-combobox-option-active:hover {
+    background: var(--kb-primary);
+    color: white;
+}
+
+.kb-combobox-option.kb-combobox-option-all {
+    font-style: italic;
+    color: var(--kb-primary-dark);
+    background: var(--kb-primary-bg);
+    border-bottom: 2px solid var(--kb-primary-light);
+}
+
+.kb-combobox-option strong {
+    color: var(--kb-primary-dark);
+    font-weight: 700;
+}
+
+.kb-combobox-option.kb-combobox-option-active strong,
+.kb-combobox-option:hover strong {
+    color: white;
+}
+
+.kb-combobox-empty {
+    padding: 12px;
+    text-align: center;
+    color: var(--kb-text-light);
+    font-size: 13px;
+    font-style: italic;
+}
+
+.kb-combobox-more {
+    padding: 8px 12px;
+    text-align: center;
+    color: var(--kb-text-muted);
+    font-size: 12px;
+    background: #fafafa;
+    border-top: 1px solid var(--kb-border);
+    font-style: italic;
+}
+
+
+/* ============================================================
+   SECTION 15: RESPONSIVE
+   ============================================================ */
+
+@media (max-width: 768px) {
+    .ml-selected-prices {
+        grid-template-columns: 1fr;
+    }
+
+    .ml-price-value { font-size: 22px; }
+
+    .ml-expected-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .ml-chart-wrapper {
+        height: 250px;
+    }
+}
+
+@media (max-width: 640px) {
+    .kb-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: var(--kb-space-sm);
+    }
+
+    .kb-header h1 { font-size: 20px; }
+
+    .kb-filters,
+    .ml-intro,
+    .ml-results {
+        margin: var(--kb-space-md);
+    }
+
+    .ml-intro, .kb-filters {
+        padding: var(--kb-space-md);
+    }
+
+    .kb-filter-actions {
+        flex-direction: column !important;
+        align-items: stretch;
+    }
+
+    .kb-btn { width: 100%; }
+
+    .ml-model-info {
+        flex-direction: column;
+        gap: var(--kb-space-sm);
+    }
+
+    .ml-table th, .ml-table td {
+        padding: 8px 10px;
+        font-size: 12px;
+    }
+}

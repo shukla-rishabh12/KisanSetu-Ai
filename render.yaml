@@ -1,0 +1,18 @@
+services:
+  - type: web
+    name: kisanbazaar-ai
+    env: python
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn --bind 0.0.0.0:$PORT --workers 1 --timeout 120 app:app
+    envVars:
+      - key: FLASK_SECRET_KEY
+        sync: false
+      - key: GOVT_API_KEY
+        sync: false
+      - key: GROQ_API_KEY
+        sync: false
+      - key: FLASK_DEBUG
+        value: "False"
+      - key: AI_MODEL_NAME
+        value: openai/gpt-oss-120b

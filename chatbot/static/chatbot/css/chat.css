@@ -1,0 +1,639 @@
+/* ============================================================
+   KisanBazaar AI — Chat Widget Styles
+   ============================================================
+   Floating chat button + expandable panel.
+   Theme: green agriculture theme (dashboard ke saath match).
+   ============================================================ */
+
+
+/* ------------------------------------------------------------
+   ROOT VARIABLES (fallback — agar dashboard CSS load na ho)
+   ------------------------------------------------------------ */
+#kb-chat-widget {
+    --kb-chat-primary: #2e7d32;
+    --kb-chat-primary-dark: #1b5e20;
+    --kb-chat-primary-light: #4caf50;
+    --kb-chat-bg: #ffffff;
+    --kb-chat-bg-light: #f5f7fa;
+    --kb-chat-text: #212121;
+    --kb-chat-text-muted: #666666;
+    --kb-chat-text-light: #999999;
+    --kb-chat-border: #e0e0e0;
+    --kb-chat-shadow: 0 8px 32px rgba(0, 0, 0, 0.18);
+    --kb-chat-radius: 12px;
+
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI",
+                 Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    font-size: 14px;
+    line-height: 1.5;
+    color: var(--kb-chat-text);
+}
+
+
+/* ============================================================
+   SECTION 1: FLOATING CHAT BUTTON
+   ============================================================ */
+
+.kb-chat-toggle {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    border: none;
+    background: linear-gradient(135deg, #2e7d32 0%, #1b5e20 100%);
+    color: white;
+    cursor: pointer;
+    box-shadow: 0 4px 16px rgba(46, 125, 50, 0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    transition: transform 0.2s, box-shadow 0.2s;
+    padding: 0;
+}
+
+.kb-chat-toggle:hover {
+    transform: scale(1.08);
+    box-shadow: 0 6px 24px rgba(46, 125, 50, 0.5);
+}
+
+.kb-chat-toggle:active {
+    transform: scale(0.98);
+}
+
+.kb-chat-toggle svg {
+    width: 26px;
+    height: 26px;
+}
+
+/* Icons: default chat icon dikhega, jab open ho to close (×) */
+.kb-chat-icon-close {
+    display: none;
+}
+
+.kb-chat-widget[data-state="open"] .kb-chat-icon-open {
+    display: none;
+}
+
+.kb-chat-widget[data-state="open"] .kb-chat-icon-close {
+    display: block;
+}
+
+/* Unread notification badge */
+.kb-chat-badge {
+    position: absolute;
+    top: -2px;
+    right: -2px;
+    min-width: 20px;
+    height: 20px;
+    padding: 0 6px;
+    background: #f44336;
+    color: white;
+    border-radius: 10px;
+    font-size: 11px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid white;
+    animation: kb-chat-pulse 1.5s infinite;
+}
+
+@keyframes kb-chat-pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+}
+
+/* Pulse animation on button when new message arrives (jab band ho) */
+.kb-chat-widget[data-state="closed"] .kb-chat-toggle.kb-has-unread {
+    animation: kb-chat-bounce 0.6s ease-in-out 2;
+}
+
+@keyframes kb-chat-bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+}
+
+
+/* ============================================================
+   SECTION 2: CHAT PANEL
+   ============================================================ */
+
+.kb-chat-panel {
+    position: fixed;
+    bottom: 100px;
+    right: 24px;
+    width: 380px;
+    height: 560px;
+    background: var(--kb-chat-bg);
+    border-radius: var(--kb-chat-radius);
+    box-shadow: var(--kb-chat-shadow);
+    display: flex;
+    flex-direction: column;
+    z-index: 9998;
+    overflow: hidden;
+
+    /* Closed state: hidden */
+    opacity: 0;
+    transform: translateY(20px) scale(0.95);
+    pointer-events: none;
+    transition: opacity 0.2s, transform 0.25s;
+}
+
+.kb-chat-widget[data-state="open"] .kb-chat-panel {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    pointer-events: auto;
+}
+
+
+/* ============================================================
+   SECTION 3: CHAT HEADER
+   ============================================================ */
+
+.kb-chat-header {
+    background: linear-gradient(135deg, #2e7d32 0%, #1b5e20 100%);
+    color: white;
+    padding: 14px 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-shrink: 0;
+}
+
+.kb-chat-header-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.kb-chat-avatar {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+}
+
+.kb-chat-header-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.kb-chat-title {
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 1.2;
+}
+
+.kb-chat-subtitle {
+    font-size: 11px;
+    opacity: 0.9;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    margin-top: 2px;
+}
+
+.kb-chat-status-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #4caf50;
+    box-shadow: 0 0 6px #4caf50;
+}
+
+.kb-chat-status-dot.kb-offline {
+    background: #f44336;
+    box-shadow: 0 0 6px #f44336;
+}
+
+.kb-chat-status-dot.kb-thinking {
+    background: #ff9800;
+    box-shadow: 0 0 6px #ff9800;
+    animation: kb-chat-blink 1s infinite;
+}
+
+@keyframes kb-chat-blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+}
+
+.kb-chat-header-right {
+    display: flex;
+    gap: 4px;
+}
+
+.kb-chat-header-btn {
+    background: rgba(255, 255, 255, 0.15);
+    border: none;
+    color: white;
+    width: 30px;
+    height: 30px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.15s;
+    padding: 0;
+}
+
+.kb-chat-header-btn:hover {
+    background: rgba(255, 255, 255, 0.28);
+}
+
+
+/* ============================================================
+   SECTION 4: MESSAGES AREA
+   ============================================================ */
+
+.kb-chat-messages {
+    flex: 1;
+    overflow-y: auto;
+    padding: 16px 14px;
+    background: var(--kb-chat-bg-light);
+    scroll-behavior: smooth;
+}
+
+.kb-chat-messages::-webkit-scrollbar {
+    width: 6px;
+}
+
+.kb-chat-messages::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.kb-chat-messages::-webkit-scrollbar-thumb {
+    background: #c0c0c0;
+    border-radius: 3px;
+}
+
+.kb-chat-messages::-webkit-scrollbar-thumb:hover {
+    background: #a0a0a0;
+}
+
+
+/* ============================================================
+   SECTION 5: WELCOME STATE
+   ============================================================ */
+
+.kb-chat-welcome {
+    text-align: center;
+    padding: 30px 20px;
+    color: var(--kb-chat-text-muted);
+}
+
+.kb-chat-welcome-icon {
+    font-size: 40px;
+    margin-bottom: 10px;
+}
+
+.kb-chat-welcome-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--kb-chat-primary-dark);
+    margin-bottom: 8px;
+}
+
+.kb-chat-welcome-text {
+    font-size: 13px;
+    line-height: 1.6;
+    margin-bottom: 14px;
+}
+
+.kb-chat-welcome-hint {
+    font-size: 11px;
+    color: var(--kb-chat-text-light);
+    background: rgba(76, 175, 80, 0.08);
+    padding: 8px 12px;
+    border-radius: 8px;
+    display: inline-block;
+}
+
+
+/* ============================================================
+   SECTION 6: MESSAGE BUBBLES
+   ============================================================ */
+
+.kb-chat-bubble {
+    max-width: 82%;
+    padding: 10px 14px;
+    border-radius: 14px;
+    margin-bottom: 10px;
+    font-size: 13.5px;
+    line-height: 1.5;
+    word-wrap: break-word;
+    animation: kb-chat-slide-in 0.25s ease-out;
+    white-space: pre-wrap;
+}
+
+@keyframes kb-chat-slide-in {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Assistant bubble (left side) */
+.kb-chat-bubble-assistant {
+    background: var(--kb-chat-bg);
+    color: var(--kb-chat-text);
+    border: 1px solid var(--kb-chat-border);
+    border-bottom-left-radius: 4px;
+    margin-right: auto;
+}
+
+/* User bubble (right side) */
+.kb-chat-bubble-user {
+    background: linear-gradient(135deg, #4caf50 0%, #2e7d32 100%);
+    color: white;
+    border-bottom-right-radius: 4px;
+    margin-left: auto;
+}
+
+/* Timestamp (small text below bubble) */
+.kb-chat-timestamp {
+    font-size: 10px;
+    color: var(--kb-chat-text-light);
+    margin-top: -6px;
+    margin-bottom: 10px;
+    padding: 0 6px;
+}
+
+.kb-chat-timestamp.kb-timestamp-user {
+    text-align: right;
+}
+
+/* Source tag (AI / fallback) */
+.kb-chat-source-tag {
+    display: inline-block;
+    font-size: 9px;
+    padding: 1px 6px;
+    border-radius: 8px;
+    margin-left: 6px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+    vertical-align: middle;
+}
+
+.kb-chat-source-ai {
+    background: rgba(46, 125, 50, 0.15);
+    color: var(--kb-chat-primary-dark);
+}
+
+.kb-chat-source-fallback {
+    background: rgba(245, 124, 0, 0.15);
+    color: #e65100;
+}
+
+/* Auto-insight bubble (special styling) */
+.kb-chat-bubble-insight {
+    background: linear-gradient(135deg, #e8f5e9 0%, #f1f8e9 100%);
+    border: 1px solid #a5d6a7;
+    color: var(--kb-chat-text);
+    border-left: 3px solid var(--kb-chat-primary);
+    border-bottom-left-radius: 4px;
+    margin-right: auto;
+    max-width: 90%;
+}
+
+.kb-chat-insight-header {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--kb-chat-primary-dark);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 6px;
+}
+
+
+/* ============================================================
+   SECTION 7: TYPING INDICATOR
+   ============================================================ */
+
+.kb-chat-typing {
+    padding: 0 14px 10px;
+    background: var(--kb-chat-bg-light);
+}
+
+.kb-chat-bubble-typing {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 12px 16px;
+    width: auto;
+    max-width: 70px;
+}
+
+.kb-chat-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--kb-chat-primary-light);
+    display: inline-block;
+    animation: kb-chat-dot-bounce 1.2s infinite ease-in-out;
+}
+
+.kb-chat-dot:nth-child(2) {
+    animation-delay: 0.15s;
+}
+
+.kb-chat-dot:nth-child(3) {
+    animation-delay: 0.3s;
+}
+
+@keyframes kb-chat-dot-bounce {
+    0%, 60%, 100% { transform: translateY(0); opacity: 0.5; }
+    30% { transform: translateY(-6px); opacity: 1; }
+}
+
+
+/* ============================================================
+   SECTION 8: OFFLINE STATE
+   ============================================================ */
+
+.kb-chat-offline {
+    padding: 30px 20px;
+    text-align: center;
+    color: var(--kb-chat-text-muted);
+    background: #fff8e1;
+    border-top: 1px solid #ffe082;
+}
+
+.kb-chat-offline-icon {
+    font-size: 32px;
+    margin-bottom: 8px;
+}
+
+.kb-chat-offline-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: #e65100;
+    margin-bottom: 6px;
+}
+
+.kb-chat-offline-text {
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+
+/* ============================================================
+   SECTION 9: INPUT AREA
+   ============================================================ */
+
+.kb-chat-input-area {
+    padding: 10px 12px 12px;
+    background: var(--kb-chat-bg);
+    border-top: 1px solid var(--kb-chat-border);
+    flex-shrink: 0;
+}
+
+.kb-chat-input-wrapper {
+    display: flex;
+    gap: 8px;
+    align-items: flex-end;
+    background: var(--kb-chat-bg-light);
+    border: 1px solid var(--kb-chat-border);
+    border-radius: 10px;
+    padding: 6px 6px 6px 12px;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.kb-chat-input-wrapper:focus-within {
+    border-color: var(--kb-chat-primary);
+    box-shadow: 0 0 0 3px rgba(46, 125, 50, 0.1);
+}
+
+.kb-chat-input {
+    flex: 1;
+    border: none;
+    background: transparent;
+    font-family: inherit;
+    font-size: 13.5px;
+    line-height: 1.4;
+    color: var(--kb-chat-text);
+    resize: none;
+    outline: none;
+    padding: 6px 0;
+    max-height: 100px;
+    min-height: 20px;
+}
+
+.kb-chat-input::placeholder {
+    color: var(--kb-chat-text-light);
+}
+
+.kb-chat-send {
+    width: 34px;
+    height: 34px;
+    border-radius: 8px;
+    border: none;
+    background: var(--kb-chat-primary);
+    color: white;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.15s, transform 0.1s;
+    flex-shrink: 0;
+    padding: 0;
+}
+
+.kb-chat-send:hover:not(:disabled) {
+    background: var(--kb-chat-primary-dark);
+}
+
+.kb-chat-send:active:not(:disabled) {
+    transform: scale(0.95);
+}
+
+.kb-chat-send:disabled {
+    background: #c0c0c0;
+    cursor: not-allowed;
+    opacity: 0.7;
+}
+
+.kb-chat-input-hint {
+    font-size: 10px;
+    color: var(--kb-chat-text-light);
+    margin-top: 6px;
+    text-align: center;
+}
+
+
+/* ============================================================
+   SECTION 10: RESPONSIVE
+   ============================================================ */
+
+/* Tablet */
+@media (max-width: 768px) {
+    .kb-chat-panel {
+        width: 360px;
+        height: 520px;
+        bottom: 90px;
+        right: 16px;
+    }
+
+    .kb-chat-toggle {
+        bottom: 16px;
+        right: 16px;
+        width: 54px;
+        height: 54px;
+    }
+}
+
+/* Mobile — full screen chat */
+@media (max-width: 480px) {
+    .kb-chat-panel {
+        bottom: 0;
+        right: 0;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100vh;
+        height: 100dvh;    /* dynamic viewport height (mobile browser) */
+        border-radius: 0;
+        max-width: 100%;
+    }
+
+    .kb-chat-toggle {
+        bottom: 16px;
+        right: 16px;
+    }
+
+    .kb-chat-widget[data-state="open"] .kb-chat-toggle {
+        display: none;    /* open hone pe button hide */
+    }
+
+    .kb-chat-bubble {
+        max-width: 88%;
+        font-size: 14px;
+    }
+
+    .kb-chat-input-hint {
+        display: none;    /* mobile pe hint chhupa do */
+    }
+}
+
+
+/* ============================================================
+   SECTION 11: ANIMATIONS UTILITY
+   ============================================================ */
+
+/* Hide scrollbar on mobile while keeping scroll */
+@media (max-width: 480px) {
+    .kb-chat-messages::-webkit-scrollbar {
+        display: none;
+    }
+
+    .kb-chat-messages {
+        scrollbar-width: none;
+    }
+}

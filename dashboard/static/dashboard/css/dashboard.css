@@ -1,0 +1,777 @@
+/* ============================================================
+   KisanBazaar AI — Dashboard Styles (Complete)
+   ============================================================ */
+
+/* ------------------------------------------------------------
+   SECTION 1: CSS VARIABLES
+   ------------------------------------------------------------ */
+:root {
+    --kb-primary: #2e7d32;
+    --kb-primary-dark: #1b5e20;
+    --kb-primary-light: #4caf50;
+    --kb-primary-bg: #e8f5e9;
+
+    --kb-accent-warn: #f57c00;
+    --kb-accent-error: #c62828;
+    --kb-accent-info: #1976d2;
+
+    --kb-card-modal: #2e7d32;
+    --kb-card-min: #1976d2;
+    --kb-card-max: #c62828;
+    --kb-card-avg: #7b1fa2;
+
+    --kb-bg: #f5f7fa;
+    --kb-bg-card: #ffffff;
+    --kb-border: #e0e0e0;
+    --kb-text: #212121;
+    --kb-text-muted: #666666;
+    --kb-text-light: #999999;
+
+    --kb-space-sm: 8px;
+    --kb-space-md: 16px;
+    --kb-space-lg: 24px;
+    --kb-space-xl: 32px;
+
+    --kb-radius-sm: 4px;
+    --kb-radius-md: 8px;
+    --kb-radius-lg: 12px;
+
+    --kb-shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.08);
+    --kb-shadow-md: 0 2px 8px rgba(0, 0, 0, 0.1);
+    --kb-shadow-lg: 0 4px 16px rgba(0, 0, 0, 0.12);
+}
+
+
+/* ------------------------------------------------------------
+   SECTION 2: RESET & BASE
+   ------------------------------------------------------------ */
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI",
+                 Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    background: var(--kb-bg);
+    color: var(--kb-text);
+    line-height: 1.5;
+    font-size: 15px;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    margin: 0;
+    font-weight: 600;
+}
+
+a {
+    color: var(--kb-primary);
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+
+/* ------------------------------------------------------------
+   SECTION 3: HEADER
+   ------------------------------------------------------------ */
+.kb-header {
+    background: linear-gradient(135deg, var(--kb-primary) 0%, var(--kb-primary-dark) 100%);
+    color: white;
+    padding: var(--kb-space-md) var(--kb-space-lg);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: var(--kb-shadow-md);
+}
+
+.kb-header-left {
+    display: flex;
+    align-items: baseline;
+    gap: var(--kb-space-md);
+}
+
+.kb-header h1 {
+    font-size: 24px;
+    margin: 0;
+}
+
+.kb-subtitle {
+    font-size: 14px;
+    opacity: 0.9;
+    font-weight: 400;
+}
+
+.kb-header-right {
+    display: flex;
+    align-items: center;
+    gap: var(--kb-space-md);
+    font-size: 13px;
+}
+
+.kb-nav-link {
+    color: white;
+    padding: 6px 12px;
+    border-radius: var(--kb-radius-sm);
+    background: rgba(255, 255, 255, 0.15);
+    transition: background 0.2s;
+    text-decoration: none;
+}
+
+.kb-nav-link:hover {
+    background: rgba(255, 255, 255, 0.25);
+    text-decoration: none;
+}
+
+.kb-last-sync {
+    font-size: 12px;
+    opacity: 0.85;
+}
+
+
+/* ------------------------------------------------------------
+   SECTION 4: SUMMARY BAR
+   ------------------------------------------------------------ */
+.kb-summary-bar {
+    background: var(--kb-bg-card);
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: var(--kb-space-md);
+    padding: var(--kb-space-md) var(--kb-space-lg);
+    border-bottom: 1px solid var(--kb-border);
+}
+
+.kb-summary-item {
+    display: flex;
+    flex-direction: column;
+    padding: var(--kb-space-sm) var(--kb-space-md);
+    border-left: 3px solid var(--kb-primary-light);
+}
+
+.kb-summary-label {
+    font-size: 12px;
+    color: var(--kb-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.kb-summary-value {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--kb-primary-dark);
+    margin-top: 2px;
+}
+
+
+/* ------------------------------------------------------------
+   SECTION 5: FILTERS
+   ------------------------------------------------------------ */
+.kb-filters {
+    background: var(--kb-bg-card);
+    margin: var(--kb-space-lg);
+    padding: var(--kb-space-lg);
+    border-radius: var(--kb-radius-md);
+    box-shadow: var(--kb-shadow-sm);
+}
+
+.kb-section-title {
+    font-size: 18px;
+    color: var(--kb-primary-dark);
+    margin-bottom: var(--kb-space-md);
+    padding-bottom: var(--kb-space-sm);
+    border-bottom: 2px solid var(--kb-primary-bg);
+}
+
+.kb-filter-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: var(--kb-space-md);
+}
+
+.kb-filter-item {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.kb-filter-item label {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--kb-text-muted);
+}
+
+.kb-input {
+    padding: 8px 12px;
+    font-size: 14px;
+    border: 1px solid var(--kb-border);
+    border-radius: var(--kb-radius-sm);
+    background: white;
+    color: var(--kb-text);
+    font-family: inherit;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    width: 100%;
+}
+
+.kb-input:focus {
+    outline: none;
+    border-color: var(--kb-primary);
+    box-shadow: 0 0 0 3px rgba(46, 125, 50, 0.12);
+}
+
+.kb-filter-actions {
+    justify-content: flex-end;
+    flex-direction: row !important;
+    align-items: flex-end;
+    gap: var(--kb-space-sm);
+}
+
+
+/* ------------------------------------------------------------
+   SECTION 6: BUTTONS
+   ------------------------------------------------------------ */
+.kb-btn {
+    padding: 9px 20px;
+    font-size: 14px;
+    font-weight: 500;
+    border: none;
+    border-radius: var(--kb-radius-sm);
+    cursor: pointer;
+    transition: background 0.2s, transform 0.1s;
+    font-family: inherit;
+    white-space: nowrap;
+}
+
+.kb-btn:active {
+    transform: scale(0.98);
+}
+
+.kb-btn-primary {
+    background: var(--kb-primary);
+    color: white;
+}
+
+.kb-btn-primary:hover {
+    background: var(--kb-primary-dark);
+}
+
+.kb-btn-secondary {
+    background: #f0f0f0;
+    color: var(--kb-text);
+}
+
+.kb-btn-secondary:hover {
+    background: #e0e0e0;
+}
+
+
+/* ------------------------------------------------------------
+   SECTION 7: LATEST PRICE CARDS
+   ------------------------------------------------------------ */
+.kb-cards-section {
+    margin: var(--kb-space-lg);
+}
+
+.kb-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: var(--kb-space-md);
+    margin-top: var(--kb-space-md);
+}
+
+.kb-card {
+    background: var(--kb-bg-card);
+    border-radius: var(--kb-radius-md);
+    padding: var(--kb-space-lg);
+    box-shadow: var(--kb-shadow-sm);
+    border-top: 4px solid var(--kb-primary);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.kb-card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--kb-shadow-md);
+}
+
+.kb-card-modal { border-top-color: var(--kb-card-modal); }
+.kb-card-min   { border-top-color: var(--kb-card-min); }
+.kb-card-max   { border-top-color: var(--kb-card-max); }
+.kb-card-avg   { border-top-color: var(--kb-card-avg); }
+
+.kb-card-label {
+    font-size: 12px;
+    color: var(--kb-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: var(--kb-space-sm);
+}
+
+.kb-card-value {
+    font-size: 32px;
+    font-weight: 700;
+    color: var(--kb-text);
+    line-height: 1;
+}
+
+.kb-card-modal .kb-card-value { color: var(--kb-card-modal); }
+.kb-card-min   .kb-card-value { color: var(--kb-card-min); }
+.kb-card-max   .kb-card-value { color: var(--kb-card-max); }
+.kb-card-avg   .kb-card-value { color: var(--kb-card-avg); }
+
+.kb-card-unit {
+    font-size: 12px;
+    color: var(--kb-text-light);
+    margin-top: var(--kb-space-sm);
+}
+
+.kb-card-meta {
+    margin-top: var(--kb-space-md);
+    padding: var(--kb-space-sm) var(--kb-space-md);
+    background: var(--kb-primary-bg);
+    border-radius: var(--kb-radius-sm);
+    font-size: 13px;
+    color: var(--kb-primary-dark);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: var(--kb-space-sm);
+}
+
+
+/* ------------------------------------------------------------
+   SECTION 8: CHARTS
+   ------------------------------------------------------------ */
+.kb-charts-section {
+    margin: var(--kb-space-lg);
+}
+
+.kb-empty-state {
+    background: var(--kb-bg-card);
+    border: 2px dashed var(--kb-border);
+    border-radius: var(--kb-radius-md);
+    padding: var(--kb-space-xl);
+    text-align: center;
+    color: var(--kb-text-muted);
+    font-size: 15px;
+}
+
+.kb-charts-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--kb-space-md);
+    margin-top: var(--kb-space-md);
+}
+
+.kb-chart-card {
+    background: var(--kb-bg-card);
+    border-radius: var(--kb-radius-md);
+    padding: var(--kb-space-md);
+    box-shadow: var(--kb-shadow-sm);
+}
+
+.kb-chart-title {
+    font-size: 15px;
+    color: var(--kb-primary-dark);
+    margin-bottom: var(--kb-space-md);
+    padding-bottom: var(--kb-space-sm);
+    border-bottom: 1px solid var(--kb-border);
+}
+
+/* Ye IMPORTANT hai — Chart.js isi height ka use karta hai */
+.kb-chart-wrapper {
+    position: relative;
+    height: 300px;
+    width: 100%;
+}
+
+
+/* ------------------------------------------------------------
+   SECTION 9: COMPARISON TABLE
+   ------------------------------------------------------------ */
+.kb-table-section {
+    margin: var(--kb-space-lg);
+}
+
+.kb-table-subtitle {
+    font-size: 13px;
+    color: var(--kb-text-muted);
+    margin-bottom: var(--kb-space-md);
+}
+
+.kb-table-wrapper {
+    background: var(--kb-bg-card);
+    border-radius: var(--kb-radius-md);
+    overflow-x: auto;
+    box-shadow: var(--kb-shadow-sm);
+}
+
+.kb-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+}
+
+.kb-table thead {
+    background: var(--kb-primary-bg);
+}
+
+.kb-table th {
+    padding: 12px 14px;
+    text-align: left;
+    font-weight: 600;
+    color: var(--kb-primary-dark);
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+    white-space: nowrap;
+}
+
+.kb-table td {
+    padding: 11px 14px;
+    border-top: 1px solid var(--kb-border);
+    color: var(--kb-text);
+}
+
+.kb-table tbody tr:hover {
+    background: #f9fdf9;
+}
+
+.kb-table tbody tr:nth-child(even) {
+    background: #fafafa;
+}
+
+.kb-table tbody tr:nth-child(even):hover {
+    background: #f5faf5;
+}
+
+.kb-table .kb-price-cell {
+    font-weight: 600;
+    color: var(--kb-primary-dark);
+}
+
+
+/* ------------------------------------------------------------
+   SECTION 10: LOADING & FOOTER
+   ------------------------------------------------------------ */
+.kb-loading {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-top-color: white;
+    border-radius: 50%;
+    animation: kb-spin 0.6s linear infinite;
+    margin-right: 6px;
+    vertical-align: middle;
+}
+
+@keyframes kb-spin {
+    to { transform: rotate(360deg); }
+}
+
+.kb-loading-overlay {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(255, 255, 255, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10;
+}
+
+.kb-loading-overlay::after {
+    content: "";
+    width: 36px;
+    height: 36px;
+    border: 3px solid var(--kb-primary-bg);
+    border-top-color: var(--kb-primary);
+    border-radius: 50%;
+    animation: kb-spin 0.8s linear infinite;
+}
+
+.kb-footer {
+    margin-top: var(--kb-space-xl);
+    padding: var(--kb-space-lg);
+    background: var(--kb-primary-dark);
+    color: rgba(255, 255, 255, 0.8);
+    text-align: center;
+    font-size: 13px;
+}
+
+.kb-footer a {
+    color: rgba(255, 255, 255, 0.95);
+    text-decoration: underline;
+}
+
+
+/* ============================================================
+   SECTION 11: COMBOBOX (Custom Searchable Dropdown)
+   ============================================================ */
+
+.kb-combobox {
+    position: relative;
+    width: 100%;
+}
+
+.kb-combobox-input {
+    width: 100%;
+    padding: 8px 32px 8px 12px;
+    font-size: 14px;
+    border: 1px solid var(--kb-border);
+    border-radius: var(--kb-radius-sm);
+    background: white;
+    color: var(--kb-text);
+    font-family: inherit;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    cursor: text;
+}
+
+.kb-combobox-input:focus {
+    outline: none;
+    border-color: var(--kb-primary);
+    box-shadow: 0 0 0 3px rgba(46, 125, 50, 0.12);
+}
+
+.kb-combobox-input::placeholder {
+    color: var(--kb-text-light);
+    font-style: italic;
+}
+
+.kb-combobox.kb-combobox-open .kb-combobox-input {
+    border-color: var(--kb-primary);
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+    box-shadow: 0 0 0 3px rgba(46, 125, 50, 0.12);
+}
+
+.kb-combobox-clear {
+    position: absolute;
+    right: 6px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 22px;
+    height: 22px;
+    border: none;
+    background: transparent;
+    color: var(--kb-text-light);
+    font-size: 18px;
+    line-height: 1;
+    cursor: pointer;
+    border-radius: 50%;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    transition: background 0.15s, color 0.15s;
+    font-family: inherit;
+}
+
+.kb-combobox-clear:hover {
+    background: #f0f0f0;
+    color: var(--kb-text);
+}
+
+.kb-combobox.kb-has-value .kb-combobox-clear {
+    display: flex;
+}
+
+.kb-combobox-dropdown {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    max-height: 260px;
+    overflow-y: auto;
+    background: white;
+    border: 1px solid var(--kb-primary);
+    border-top: none;
+    border-bottom-left-radius: var(--kb-radius-sm);
+    border-bottom-right-radius: var(--kb-radius-sm);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
+    display: none;
+}
+
+.kb-combobox.kb-combobox-open .kb-combobox-dropdown {
+    display: block;
+}
+
+.kb-combobox-dropdown::-webkit-scrollbar {
+    width: 8px;
+}
+
+.kb-combobox-dropdown::-webkit-scrollbar-track {
+    background: #f5f5f5;
+}
+
+.kb-combobox-dropdown::-webkit-scrollbar-thumb {
+    background: #c0c0c0;
+    border-radius: 4px;
+}
+
+.kb-combobox-dropdown::-webkit-scrollbar-thumb:hover {
+    background: #a0a0a0;
+}
+
+.kb-combobox-option {
+    padding: 8px 12px;
+    font-size: 13px;
+    cursor: pointer;
+    color: var(--kb-text);
+    border-bottom: 1px solid #f5f5f5;
+    transition: background 0.1s;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.kb-combobox-option:last-child {
+    border-bottom: none;
+}
+
+.kb-combobox-option:hover {
+    background: var(--kb-primary-bg);
+}
+
+.kb-combobox-option.kb-combobox-option-active,
+.kb-combobox-option.kb-combobox-option-active:hover {
+    background: var(--kb-primary);
+    color: white;
+}
+
+.kb-combobox-option.kb-combobox-option-all {
+    font-style: italic;
+    color: var(--kb-primary-dark);
+    background: var(--kb-primary-bg);
+    border-bottom: 2px solid var(--kb-primary-light);
+}
+
+.kb-combobox-option.kb-combobox-option-all:hover {
+    background: var(--kb-primary-light);
+    color: white;
+}
+
+.kb-combobox-option strong {
+    color: var(--kb-primary-dark);
+    font-weight: 700;
+}
+
+.kb-combobox-option.kb-combobox-option-active strong,
+.kb-combobox-option:hover strong {
+    color: white;
+}
+
+.kb-combobox-empty {
+    padding: 12px;
+    text-align: center;
+    color: var(--kb-text-light);
+    font-size: 13px;
+    font-style: italic;
+}
+
+.kb-combobox-more {
+    padding: 8px 12px;
+    text-align: center;
+    color: var(--kb-text-muted);
+    font-size: 12px;
+    background: #fafafa;
+    border-top: 1px solid var(--kb-border);
+    font-style: italic;
+}
+
+
+/* ============================================================
+   SECTION 12: RESPONSIVE
+   ============================================================ */
+
+@media (max-width: 992px) {
+    .kb-charts-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 640px) {
+    .kb-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: var(--kb-space-sm);
+    }
+
+    .kb-header-left {
+        flex-direction: column;
+        gap: 4px;
+    }
+
+    .kb-header h1 {
+        font-size: 20px;
+    }
+
+    .kb-filters,
+    .kb-cards-section,
+    .kb-charts-section,
+    .kb-table-section {
+        margin: var(--kb-space-md);
+    }
+
+    .kb-filters {
+        padding: var(--kb-space-md);
+    }
+
+    .kb-cards {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .kb-card {
+        padding: var(--kb-space-md);
+    }
+
+    .kb-card-value {
+        font-size: 24px;
+    }
+
+    .kb-filter-actions {
+        flex-direction: column !important;
+        align-items: stretch;
+    }
+
+    .kb-btn {
+        width: 100%;
+    }
+
+    .kb-summary-bar {
+        grid-template-columns: 1fr 1fr;
+        padding: var(--kb-space-md);
+    }
+
+    .kb-summary-value {
+        font-size: 16px;
+    }
+
+    .kb-chart-wrapper {
+        height: 250px;
+    }
+
+    .kb-table th,
+    .kb-table td {
+        padding: 8px 10px;
+        font-size: 12px;
+    }
+
+    .kb-combobox-dropdown {
+        max-height: 200px;
+    }
+
+    .kb-combobox-option {
+        padding: 10px 12px;
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 400px) {
+    .kb-cards {
+        grid-template-columns: 1fr;
+    }
+}

@@ -1,0 +1,64 @@
+# ============================================================
+# KisanBazaar AI — Python Dependencies
+# ============================================================
+# Install karne ke liye:
+#   pip install -r requirements.txt
+# ============================================================
+
+# ----- Web Framework -----
+# Flask: Backend server, routing, APIs, blueprints
+Flask==3.0.3
+
+# Flask-CORS: Frontend se API calls allow karne ke liye (development me useful)
+Flask-Cors==4.0.1
+
+# python-dotenv: .env file se API keys aur secrets load karne ke liye
+python-dotenv==1.0.1
+
+# ----- HTTP Requests -----
+# requests: Government mandi API se data fetch karne ke liye
+requests==2.32.3
+
+# ----- Data Processing -----
+# pandas: CSV/DataFrame operations, data cleaning, aggregation
+pandas==2.2.2
+
+# numpy: Numerical operations, arrays, math
+numpy==1.26.4
+
+# ----- Scheduling -----
+# APScheduler: Daily API fetch scheduler (cron-like) ke liye
+APScheduler==3.10.4
+
+# ----- ML (Dashboard ke liye zaroori nahi, lekin project me aage lagegi) -----
+# scikit-learn: ML models, preprocessing, metrics
+scikit-learn==1.5.1
+
+
+# joblib: Trained ML models ko .pkl me save/load karne ke liye
+joblib==1.4.2
+
+# ----- AI / Chatbot (Dashboard ke baad aayega) -----
+# google-generativeai: Gemini API ke liye (chatbot me use hoga)
+google-generativeai==0.7.2
+
+# ----- Utilities -----
+# python-dateutil: Date parsing, relative dates, etc.
+python-dateutil==2.9.0.post0
+
+
+# ----- AI / Chatbot -----
+# groq: Fast LLM inference (chatbot ke liye)
+groq==0.11.0
+
+
+
+
+# Production server (Render ke liye zaroori)
+gunicorn==21.2.0
+
+# CatBoost (ML model isse banaya)
+catboost==1.2.10
+
+
+

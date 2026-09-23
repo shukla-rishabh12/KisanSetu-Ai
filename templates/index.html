@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KisanSetu AI — Home</title>
+    <style>
+        * { box-sizing: border-box; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI",
+                         Roboto, sans-serif;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #e8f5e9 0%, #f1f8e9 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: #212121;
+        }
+
+        .kb-hero {
+            text-align: center;
+            padding: 40px 20px;
+            max-width: 900px;
+        }
+
+        .kb-hero h1 {
+            font-size: 48px;
+            color: #2e7d32;
+            margin: 0 0 10px 0;
+        }
+
+        .kb-tagline {
+            font-size: 18px;
+            color: #555;
+            margin-bottom: 10px;
+            font-style: italic;
+        }
+
+        .kb-desc {
+            font-size: 15px;
+            color: #666;
+            margin-bottom: 40px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.6;
+        }
+
+        .kb-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+            width: 100%;
+            max-width: 850px;
+            padding: 0 20px;
+        }
+
+        .kb-option-card {
+            background: white;
+            padding: 28px 24px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            text-decoration: none;
+            color: #333;
+            transition: all 0.2s;
+            border-top: 4px solid #2e7d32;
+            text-align: left;
+            display: block;
+        }
+
+        .kb-option-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 24px rgba(46, 125, 50, 0.15);
+            text-decoration: none;
+        }
+
+        .kb-option-card h3 {
+            margin: 0 0 8px 0;
+            color: #2e7d32;
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .kb-option-card p {
+            margin: 0;
+            color: #666;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .kb-option-card.kb-soon {
+            opacity: 0.6;
+            cursor: not-allowed;
+            border-top-color: #ccc;
+        }
+
+        .kb-option-card.kb-soon h3 {
+            color: #999;
+        }
+
+        .kb-badge {
+            display: inline-block;
+            font-size: 10px;
+            padding: 2px 8px;
+            background: #fff3e0;
+            color: #e65100;
+            border-radius: 10px;
+            margin-left: 6px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .kb-footer-home {
+            margin-top: 50px;
+            padding: 20px;
+            text-align: center;
+            color: #888;
+            font-size: 13px;
+        }
+
+        .kb-footer-home a {
+            color: #2e7d32;
+        }
+
+        @media (max-width: 640px) {
+            .kb-hero h1 { font-size: 32px; }
+            .kb-tagline { font-size: 15px; }
+            .kb-options { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="kb-hero">
+        <h1>🌾 KisanSetu AI</h1>
+        <p class="kb-tagline">"Know today's market. Predict tomorrow's price."</p>
+        <p class="kb-desc">
+            Government mandi data pe based ek AI-powered market intelligence platform.
+            Farmers ke liye — current mandi prices, historical trends, aur
+            future price forecasting.
+        </p>
+    </div>
+
+    <div class="kb-options">
+        <!-- Live Market Dashboard -->
+        <a class="kb-option-card" href="/dashboard">
+            <h3>📊 Live Market Dashboard</h3>
+            <p>Government API se current aur historical mandi prices. Filters, charts, aur market comparison.</p>
+        </a>
+
+        <!-- Price Forecast (ML) -->
+        <a class="kb-option-card" href="/forecast">
+            <h3>🔮 Price Forecast</h3>
+            <p>Next 10 days ka expected price aur trend prediction. Market, commodity aur variety select karo.</p>
+        </a>
+
+        <!-- Ask AI (Kisan Mitra — Farming Consultant) -->
+        <a class="kb-option-card" href="/assistant">
+            <h3>💬 Ask Kisan Mitra</h3>
+            <p>Aapka AI farming consultant. Fasal, khaad, beej, mausam, sarkari yojna — kuch bhi poocho.</p>
+        </a>
+    </div>
+
+    <div class="kb-footer-home">
+        Data source: <a href="https://data.gov.in" target="_blank">data.gov.in</a> —
+        Directorate of Marketing &amp; Inspection, Ministry of Agriculture &amp; Farmers Welfare
+    </div>
+
+</body>
+</html>
